@@ -20,6 +20,8 @@ def do_operation(cur_line, op, arg, accum):
 		return cur_line + 1, accum + arg
 
 program = read_program('input.txt')
+program_fail = read_program('input_fail.txt')
+program_pass = read_program('input_pass.txt')
 
 def terminates(program):
 	visited = set()
@@ -38,6 +40,9 @@ def terminates(program):
 			return False, accum
 
 print("original program: terminates = {}, accum = {}".format(*terminates(program)))
+print("fail test program: terminates = {}, accum = {}".format(*terminates(program_fail)))
+print("pass test program: terminates = {}, accum = {}".format(*terminates(program_pass)))
+
 
 line_num = 0
 results = []
