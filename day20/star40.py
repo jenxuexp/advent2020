@@ -2,6 +2,7 @@ import numpy as np
 from collections import Counter, defaultdict
 from scipy.signal import convolve2d
 from copy import copy
+import time
 
 def make_seamonster(fname):
     with open(fname) as f:
@@ -107,6 +108,8 @@ def make_image_from_image_ids(image_ids, d):
         image[i*8:(i+1)*8, j*8:(j+1)*8] = tile[1:9, 1:9]
     return image
 
+t0 = time.time()
+
 with open('input.txt') as f:
     s = f.read().replace('#', '1').replace('.', '0')
 
@@ -206,3 +209,4 @@ sm_rows, sm_cols, sea_monster_counter = check_seamonster(sea_monster, image, sea
 sea_monster = np.fliplr(sea_monster)
 sm_rows, sm_cols, sea_monster_counter = check_seamonster(sea_monster, image, sea_monster_counter, sm_rows, sm_cols)
 print('RESULT MAYBE', np.sum(image) - np.shape(np.where(sea_monster_counter==2))[1])
+print("execution time = ", time.time() - t0)

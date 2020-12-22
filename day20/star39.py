@@ -1,5 +1,6 @@
 import numpy as np
 from collections import Counter
+import time
 
 def parse_block(block):
     subblocks = block.split('\n')
@@ -27,6 +28,8 @@ def check_match(question_tile, edges_set):
     else:
         return False, num_matched_tiles
 
+t0 =  time.time()
+
 with open('input.txt') as f:
     s = f.read().replace('#', '1').replace('.', '0')
 
@@ -53,3 +56,4 @@ for block_num, edges in e.items():
         num_matches[block_num] += num_match
 
 print(np.prod([key for key, value in num_matches.items() if value == 4], dtype='int64'))
+print("execution time = ", time.time() - t0)
