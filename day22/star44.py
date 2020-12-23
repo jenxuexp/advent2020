@@ -3,7 +3,7 @@ from time import time
 
 t0 = time()
 
-fname = 'input.txt'
+fname = 'input_test.txt'
 with open(fname) as f:
     p1_str, p2_str = f.read().split('\n\n')
 
@@ -55,8 +55,8 @@ def play(deck1, deck2, verbosity=0):
     winner = 1 if deck1 else 2
     return winner, deck1, deck2
 
-print(play(deck1, deck2, verbosity=0))
+print(play(deck1, deck2, verbosity=2))
 
 print(sum([(len(deck1) - i)*card for i, card in enumerate(deck1)]))
-print(sum([(len(deck1) - i)*card for i, card in enumerate(deck2)]))
+print(sum([(len(deck2) - i)*card for i, card in enumerate(deck2)]))
 print("time elapsed = ", time() - t0)
