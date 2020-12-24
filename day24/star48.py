@@ -1,4 +1,5 @@
 import numpy as np
+from time import time
 
 def parse_line(line):
     instructions = []
@@ -43,12 +44,13 @@ def make_pattern(fname, pad=100):
         array = update_tile(array, instruction, idict, maxlen+pad)
     return array
 
-def update_pattern(pattern, new_pattern=None):
-    if new_pattern is None:
-        new_pattern = pattern.copy()
+def update_pattern(pattern):
+    to_update = {0: [], 1: []}
 
     adjacent = np.array([idict[d] for d in ('e', 'w', 'sw', 'se', 'nw', 'ne')])
     for i, j in np.ndindex(*np.shape(pattern)):
+        if (i + j) % 2 == 1:
+            continue
         if i < 1 or i > len(pattern) - 3 or j < 1 or j > len(pattern[0]) - 3:
             continue
         adjacent_values = []
@@ -56,19 +58,25 @@ def update_pattern(pattern, new_pattern=None):
             adjacent_values.append(pattern[i + k, j + l])
         s = sum(adjacent_values)
         if pattern[i, j] and (s == 0 or s > 2):
-            new_pattern[i, j] = 0
+            to_update[0].append([i, j])
         elif not pattern[i, j] and s == 2:
-            new_pattern[i, j] = 1
-    return new_pattern, pattern
+            to_update[1].append([i, j])
+    
+    for i, j in to_update[0]:
+        pattern[i, j] = 0
+    for i, j in to_update[1]:
+        pattern[i, j] = 1
+    
+    return pattern
 
 def solve(fname, iterations=100):
     pattern = make_pattern(fname, pad=iterations)
-    new_pattern = None
     for i in range(iterations):
         print("Day {}: {}".format(i, np.sum(pattern)))  #DELME
-        # not sure why the storage array isn't working... just toss it out like managers' technical skills
-        pattern, _ = update_pattern(pattern, new_pattern)
+        pattern= update_pattern(pattern)
     return np.sum(pattern)
 
+t0 = time()
 # print("Day 100: ", solve('input_test.txt'))
 print("Day 100: ", solve('input.txt'))
+print("elapsed time = ", time() - t0)
